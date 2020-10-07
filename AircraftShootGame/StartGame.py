@@ -6,9 +6,10 @@ Created on 2020.09.20
 import pygame
 from pygame.locals import *
 from sys import exit
+from random import randint
 from Config import *
 from GameRole import *
-from resource import *
+from Resource import *
 
 BACKGROUND_IMAGE_HEIGHT = 800
 
@@ -36,14 +37,14 @@ class ScreenInfo:
         return False
 
     def displayInfo(self, screen, game_over, bomb_num, plane_life):
-        def dispalyScore(screen, score):
-            score_font = pygame.font.Font(None, 36)  # 分数字体
+        def displayScore(screen, score):
+            score_font = pygame.font.Font(None, 36)     # 分数字体
             score_text = score_font.render(str(score), True, (128, 128, 128))
             text_rect = score_text.get_rect()
             text_rect.topleft = [SCREEN_WIDTH // 2 - 35, 10]
             screen.blit(score_text, text_rect)
 
-        dispalyScore(screen, self.score)
+        displayScore(screen, self.score)
 
         if not game_over:
             bomb_rect = self.bomb_surface.get_rect()
@@ -52,9 +53,9 @@ class ScreenInfo:
 
             bomb_font = pygame.font.Font(None, 36)
             bomb_text = bomb_font.render(" : " + str(bomb_num), True, (128, 128, 128))
-            text_rext = bomb_text.get_rect()
-            text_rext.topleft = [30, 10]
-            screen.blit(bomb_text, text_rext)
+            text_rect = bomb_text.get_rect()
+            text_rect.topleft = [30, 10]
+            screen.blit(bomb_text, text_rect)
 
             for i in range(plane_life):
                 plane_rect = self.plane_surface.get_rect()
@@ -64,8 +65,8 @@ class ScreenInfo:
 
 class Game:
     def __init__(self, caption, hero, screen_info):
-        self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])        #设置游戏窗口
-        pygame.display.set_caption(caption)     # 设置标题
+        self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])  # 设置游戏窗口
+        pygame.display.set_caption(caption)  # 设置标题
         self.hero = hero
         self.clock = pygame.time.Clock()
         self.screen_info = screen_info
@@ -102,25 +103,27 @@ class Game:
             enemy_groups[index].createEnemy()
 
     # 符合条件时create a new gift
-    def createGift(self, gift_groups, ticks, Screen_info):
+    def createGift(self, gift_groups, ticks, screen_info):
         """ create a new gift
         0 < score < 40000 :     Not Laser
         """
-        if ticks % CREATE_CYCLE == 0 and Screen_info.shouldCreateGift():
-            score = Screen_info.getScore()
-            if score < 40000:
-                gift_range = 2
+        if ticks % CREATE_CYCLE == 0 and screen_info.shouldCreateGift():
+            score = screen_info.getScore()
+            if score < 20000:
+                gift_range = 0
+            elif score < 40000:
+                gift_range = 1
             else:
                 gift_range = 1
 
             gift_size = 0
             for group in gift_groups:
                 gift_size += len(group.group)
-            if gift_size == 0:
+            if gift_size == 0:                      # 每次只产生一个道具
                 if self.hero.bomb_num >= 3:         # 则不产生bomb
-                    index = randint(2, gift_range)
-                else:
                     index = randint(1, gift_range)
+                else:
+                    index = randint(0, gift_range)
                 gift_groups[index].createGift()     # 产生对应道具
 
     def play(self, enemy_groups, gift_groups):
@@ -133,13 +136,15 @@ class Game:
                 screen.blit(background, (0, current_y), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - current_y))
 
         def checkBulletCollide(enemy_group, bullets_group, screen, ticks):
+            """子弹和敌机的碰撞检测"""
             score = 0
             for group in enemy_group:
                 for bullet_group in bullets_group:
-                    score += group.checkBulletCollide(bullet_group, screen, ticks)      #
+                    score += group.checkBulletCollide(bullet_group, screen, ticks)
             return score
 
         def checkHeroCollide(hero, enemy_group):
+            """英雄和敌机的碰撞检测"""
             collide = False
             for group in enemy_group:
                 if group.checkHeroCollide(hero):
@@ -155,36 +160,36 @@ class Game:
 
         if self.ticks >= FRAME_RATE:
             self.ticks = 0
-
-        self.hero.play()
-
+        # 英雄动作
+        self.hero.update()
+        # 敌机创建动作
         self.createEnemy(enemy_groups, self.ticks, self.screen_info.getScore())
+        # 道具创建动作
         self.createGift(gift_groups, self.ticks, self.screen_info)
-
-        self.screen_info.addScore(
-            checkBulletCollide(enemy_groups, self.hero.weapon_groups, self.screen, self.ticks))
-
+        # 分数动作
+        self.screen_info.addScore(checkBulletCollide(enemy_groups, self.hero.weapon_groups, self.screen, self.ticks))
+        # 英雄死亡动作
         if checkHeroCollide(self.hero, enemy_groups):
             if self.hero.isHeroCrash():
                 game_over_sound.play()
-
+        # 拾取道具动作
         for gift_group in gift_groups:
             gift_group.checkHeroCollide(self.hero)
-
+        # 英雄射击动作
         for weapon_group in self.hero.weapon_groups:
             weapon_group.draw(self.screen)
-
+        # 敌机组更新动作
         for enemy_group in enemy_groups:
             enemy_group.update()
             enemy_group.draw(self.screen)
-
+        # 道具组更新动作
         for gift_group in gift_groups:
             gift_group.update()
             gift_group.draw(self.screen)
-
+        # 将英雄呢绘制到屏幕
         self.screen.blit(self.hero.image, self.hero.rect)
         self.ticks += 1
-
+        # 展示游戏信息
         self.screen_info.displayInfo(self.screen, 0, self.hero.bomb_num, self.hero.life)
 
     def isGameOver(self):
@@ -210,34 +215,36 @@ offset = {pygame.K_LEFT: 0, pygame.K_RIGHT: 0, pygame.K_UP: 0, pygame.K_DOWN: 0}
 
 pygame.init()       # 初始化
 
-(background, gameover, game_over_sound, bomb_surface, plane_surface) = initGame()   # 变量初始化
-screen_info = ScreenInfo(bomb_surface, plane_surface)               # 展示游戏初始信息
-myGame = Game('Air Craft Shooter!', initHero(), screen_info)        # 开始游戏，实例化初始英雄， 屏幕
-enemy_groups = initEnemyGroups()                                    # 实例初始化敌机精灵组
-gift_groups = initGiftGroups()                                      # 实例初始化道具精灵组
+(background, gameover, game_over_sound, bomb_surface, plane_surface) = initGame()
+screen_info = ScreenInfo(bomb_surface, plane_surface)
+myGame = Game('Air Craft Shooter!', initHero(), screen_info)
+enemy_groups = initEnemyGroups()
+gift_groups = initGiftGroups()
 
 while True:
     if myGame.isGameOver():
         myGame.showGameOver()
     elif not myGame.isPause():
-         myGame.play(enemy_groups, gift_groups)
-    pygame.display.update()                                         # 更新屏幕
+        myGame.play(enemy_groups, gift_groups)
+
+    pygame.display.update()                 # 更新屏幕
+
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:                               # Q键退出游戏
+        if event.type == pygame.QUIT:       # Q键退出游戏
             pygame.quit()
             exit()
         # get keyboard input
-        if event.type == pygame.KEYDOWN:                            # 按下键盘时
-            if event.key in offset:                                 # 移动
+        if event.type == pygame.KEYDOWN:    # 按下键盘时
+            if event.key in offset:         # 移动
                 offset[event.key] = 3
-            elif event.key == pygame.K_SPACE:                       # 空格使用Bomb
+            elif event.key == pygame.K_SPACE:  # 空格使用Bomb
                 myGame.hero.useBomb()
             # press z to pause or resume game
-            elif event.key == pygame.K_z:                           # Z键暂停
+            elif event.key == pygame.K_z:   # Z键暂停
                 myGame.setPause()
-        elif event.type == pygame.KEYUP:                            # 松开键盘时
+        elif event.type == pygame.KEYUP:    # 松开键盘时
             if event.key in offset:
                 offset[event.key] = 0
 
-    if not myGame.hero.is_hit:                                      # 移动
-        myGame.hero.move(offset)
+    if not myGame.hero.is_hit:              # 移动
+        myGame.hero.moving(offset)

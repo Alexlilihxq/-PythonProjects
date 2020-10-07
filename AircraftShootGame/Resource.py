@@ -11,8 +11,8 @@ from GameRole import *
 shoot_img = pygame.image.load('resource/image/shoot.png')
 
 
-# 武器库图片、音效配置
 def initWeaponGroups():
+    """初始化英雄武器资源"""
     weapon_groups = []
     bullet1_surface = shoot_img.subsurface(pygame.Rect(1004, 987, 9, 21))
     bullet_sound = pygame.mixer.Sound('resource/sound/bullet.wav')
@@ -31,6 +31,7 @@ def initWeaponGroups():
 
 
 def initHero():
+    """初始化英雄资源"""
     hero_surface = []
     hero_surface.append(shoot_img.subsurface(pygame.Rect(0, 99, 102, 126)))
     hero_surface.append(shoot_img.subsurface(pygame.Rect(165, 360, 102, 126)))
@@ -46,6 +47,7 @@ def initHero():
 
 
 def initEnemyGroups():
+    """初始化敌机组资源"""
     enemy_groups = []
 
     bullet_sound = pygame.mixer.Sound('resource/sound/bullet.wav')
@@ -102,29 +104,33 @@ def initEnemyGroups():
 
 
 def initGiftGroups():
+    """初始化道具资源"""
     gift_groups = []
-    gift1_surface = shoot_img.subsurface(pygame.Rect(101, 120, 60, 104))
+    gift1_surface = shoot_img.subsurface(pygame.Rect(101, 120, 60, 104))    # 镭弹
     gift1_sound = pygame.mixer.Sound('resource/sound/get_bomb.wav')
     gift1_sound.set_volume(0.3)
     gift_groups.append(GiftGroup(gift1_surface, gift1_sound, 1, GameGift.Bomb))
 
-    gift2_surface = shoot_img.subsurface(pygame.Rect(265, 400, 60, 85))
+    gift2_surface = shoot_img.subsurface(pygame.Rect(265, 400, 60, 85))     # 强化子弹
     gift_groups.append(GiftGroup(gift2_surface, gift1_sound, 1, GameGift.PowerBullet))
 
     return gift_groups
 
 
 def initGame():
+    """初始化游戏属性资源"""
+    # 背景音乐
     pygame.mixer.music.load('resource/sound/game_music.wav')
     pygame.mixer.music.play(-1, 0.0)
     pygame.mixer.music.set_volume(0.2)
-
+    # 背景
     background = pygame.image.load('resource/image/background.png')
     gameover = pygame.image.load('resource/image/gameover.png')
-
+    # 游戏结束音效
     game_over_sound = pygame.mixer.Sound('resource/sound/game_over.wav')
     game_over_sound.set_volume(0.3)
-
+    # 尺寸缩放
     bomb_surface = pygame.transform.scale(shoot_img.subsurface(pygame.Rect(828, 691, 28, 57)), (19, 40))
     plane_surface = pygame.transform.scale(shoot_img.subsurface(pygame.Rect(5, 99, 96, 96)), (36, 36))
-    return (background, gameover, game_over_sound, bomb_surface, plane_surface)
+
+    return background, gameover, game_over_sound, bomb_surface, plane_surface
