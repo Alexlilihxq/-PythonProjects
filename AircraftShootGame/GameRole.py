@@ -317,7 +317,7 @@ class EnemyGroup:
         score = 0
         self.down_group.add(pygame.sprite.groupcollide(self.group, bullets.group, False, True))
         for enemy_down in self.down_group:  # 遍历所有被子弹击中的敌机
-            if enemy_down.is_down:  # 敌机被击毁产生动画效果
+            if enemy_down.is_down:          # 敌机被击毁产生动画效果
                 screen.blit(self.down_surface[enemy_down.down_index], enemy_down.rect)
                 if ticks % (ANIMATE_CYCLE // 2) == 0:
                     if enemy_down.down_index < (len(self.down_surface) - 1):
@@ -327,7 +327,7 @@ class EnemyGroup:
                     else:
                         self.down_group.remove(enemy_down)  # 播放完从坠机组移除
                         score += self.score
-            else:  # 击中未击毁减血量
+            else:                                           # 击中未击毁减血量
                 enemy_down.damage += bullets.damage         # 敌机受损量
                 enemy_down.is_hit = ANIMATE_CYCLE // 3
                 if enemy_down.damage >= self.health:
@@ -335,7 +335,7 @@ class EnemyGroup:
                     self.group.remove(enemy_down)
                 else:
                     self.down_group.remove(enemy_down)      # 敌机未坠毁则不必要加入enemy_down
-        return score  # 返回本次得分值
+        return score                                        # 返回本次得分值
 
     def checkHeroCollide(self, hero):
         """英雄和敌机的碰撞检测"""

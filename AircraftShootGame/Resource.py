@@ -65,9 +65,7 @@ def initEnemyGroups():
     enemy1_down_surface.append(shoot_img.subsurface(pygame.Rect(930, 697, 57, 43)))
     enemy1_down_sound = pygame.mixer.Sound('resource/sound/enemy1_down.wav')
     enemy1_down_sound.set_volume(0.3)
-    enemy_groups.append(
-        EnemyGroup(enemy1_surface, enemy1_hit_surface, enemy1_down_surface, enemy1_down_sound, 1000, 1, 3,
-                   EnemyType.EnemyType1, None))
+    enemy_groups.append(EnemyGroup(enemy1_surface, enemy1_hit_surface, enemy1_down_surface, enemy1_down_sound, 1000, 1, 3, EnemyType.EnemyType1, None))
 
     enemy2_surface = []
     enemy2_surface.append(shoot_img.subsurface(pygame.Rect(0, 0, 69, 99)))
@@ -79,9 +77,7 @@ def initEnemyGroups():
     enemy2_down_surface.append(shoot_img.subsurface(pygame.Rect(741, 653, 69, 95)))
     enemy2_down_sound = pygame.mixer.Sound('resource/sound/enemy2_down.wav')
     enemy2_down_sound.set_volume(0.3)
-    enemy_groups.append(
-        EnemyGroup(enemy2_surface, enemy2_hit_surface, enemy2_down_surface, enemy2_down_sound, 3000, 3, 2,
-                   EnemyType.EnemyType2, enemy_weapon_group))
+    enemy_groups.append(EnemyGroup(enemy2_surface, enemy2_hit_surface, enemy2_down_surface, enemy2_down_sound, 3000, 3, 2, EnemyType.EnemyType2, enemy_weapon_group))
 
     enemy3_surface = []
     enemy3_surface.append(shoot_img.subsurface(pygame.Rect(335, 750, 169, 258)))
@@ -96,9 +92,7 @@ def initEnemyGroups():
     enemy3_down_surface.append(shoot_img.subsurface(pygame.Rect(0, 747, 166, 261)))
     enemy3_down_sound = pygame.mixer.Sound('resource/sound/enemy3_down.wav')
     enemy3_down_sound.set_volume(0.3)
-    enemy_groups.append(
-        EnemyGroup(enemy3_surface, enemy3_hit_surface, enemy3_down_surface, enemy3_down_sound, 9000, 12, 1,
-                   EnemyType.EnemyType3, enemy_weapon_group))
+    enemy_groups.append(EnemyGroup(enemy3_surface, enemy3_hit_surface, enemy3_down_surface, enemy3_down_sound, 9000, 12, 1, EnemyType.EnemyType3, enemy_weapon_group))
 
     return enemy_groups
 

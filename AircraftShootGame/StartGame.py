@@ -66,7 +66,7 @@ class ScreenInfo:
 class Game:
     def __init__(self, caption, hero, screen_info):
         self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])  # 设置游戏窗口
-        pygame.display.set_caption(caption)  # 设置标题
+        pygame.display.set_caption(caption)     # 设置标题
         self.hero = hero
         self.clock = pygame.time.Clock()
         self.screen_info = screen_info
@@ -154,7 +154,7 @@ class Game:
 
         self.clock.tick(FRAME_RATE)
         if self.background_y == SCREEN_HEIGHT:
-            self.backrgound_y = SCREEN_HEIGHT - background.get_height()
+            self.background_y = SCREEN_HEIGHT - background.get_height()
         updateBackground(self.screen, background.get_height(), self.background_y)
         self.background_y += 1
 
