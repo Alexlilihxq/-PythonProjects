@@ -2,6 +2,8 @@
 """
 Created on 2020.09.20
 @author: Alexlilihxq
+About : 关于游戏基本属性，屏幕大小，刷新帧率，游戏难度等
+GitHub : https://github.com/Alexlilihxq
 """
 
 # screen size 
@@ -16,7 +18,7 @@ ANIMATE_CYCLE = 30
 
 # enemy plane appear in y range (0, ENEMY_APPEAR_HEIGHT) when come from left or right side
 # easy:SCREEN_HEIGHT//3, hard:SCREEN_HEIGHT//2, dead:(SCREEN_HEIGHT*2//3)
-ENEMY_APPEAR_HEIGHT = (SCREEN_HEIGHT // 3)
+ENEMY_APPEAR_HEIGHT = (SCREEN_HEIGHT*2 // 3)
 
 # create enemy and gift frequency of tick unit
 # easy:60, hard:30
@@ -24,7 +26,7 @@ CREATE_CYCLE = 60
 
 # hero shoot frequency of tick unit
 # easy:10, hard:15, dead:30
-SHOOT_CYCLE = 15
+SHOOT_CYCLE = 10
 # easy <= 5, hard: (6,8)
 SHOOT_SPEED = 8
 

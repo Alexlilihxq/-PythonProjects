@@ -64,8 +64,8 @@ class ScreenInfo:
 
 class Game:
     def __init__(self, caption, hero, screen_info):
-        self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
-        pygame.display.set_caption(caption)
+        self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])        #设置游戏窗口
+        pygame.display.set_caption(caption)     # 设置标题
         self.hero = hero
         self.clock = pygame.time.Clock()
         self.screen_info = screen_info
@@ -75,7 +75,11 @@ class Game:
 
     # 符合条件时create a new enemy
     def createEnemy(self, enemy_groups, ticks, score):
-        # limit enemy2 and enemy3 numbers
+        """ limit enemy2 and enemy3 numbers
+        0 < score < 10000 :     Only enemy1
+        10000 < score < 20000 : enemy1:enemy2 = 1:1
+        20000 < score < 40000 : enemy1:enemy2:enemy3 = 3:3:1
+        """
         def getEnemyIndex(enemy_groups, enemy_range):
             index = randint(0, enemy_range)
             if index == 2:
@@ -99,30 +103,32 @@ class Game:
 
     # 符合条件时create a new gift
     def createGift(self, gift_groups, ticks, Screen_info):
+        """ create a new gift
+        0 < score < 40000 :     Not Laser
+        """
         if ticks % CREATE_CYCLE == 0 and Screen_info.shouldCreateGift():
             score = Screen_info.getScore()
-            if score < 20000:
-                gift_range = 0
-            elif score < 40000:
-                gift_range = 1
+            if score < 40000:
+                gift_range = 2
             else:
                 gift_range = 1
 
             gift_size = 0
-            for group in gift_group:
+            for group in gift_groups:
                 gift_size += len(group.group)
             if gift_size == 0:
-                if self.hero.bomb_num >= 3:
-                    index = randint(1, gift_range)
+                if self.hero.bomb_num >= 3:         # 则不产生bomb
+                    index = randint(2, gift_range)
                 else:
-                    index = randint(0, gift_range)
-                gift_groups[index].createGift()
+                    index = randint(1, gift_range)
+                gift_groups[index].createGift()     # 产生对应道具
 
     def play(self, enemy_groups, gift_groups):
         def updateBackground(screen, image_height, current_y):
-            if current_y <= 0:
+            """ 更新背景 """
+            if current_y <= 0:                      # 背景第一幕
                 screen.blit(background, (0, 0), (0, -current_y, SCREEN_WIDTH, SCREEN_HEIGHT))
-            elif current_y < SCREEN_HEIGHT:
+            elif current_y < SCREEN_HEIGHT:         # 背景循环幕
                 screen.blit(background, (0, 0), (0, image_height - current_y, SCREEN_WIDTH, current_y))
                 screen.blit(background, (0, current_y), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - current_y))
 
@@ -130,7 +136,7 @@ class Game:
             score = 0
             for group in enemy_group:
                 for bullet_group in bullets_group:
-                    score += group.checkBulletCollide(bullet_group, screen, ticks)
+                    score += group.checkBulletCollide(bullet_group, screen, ticks)      #
             return score
 
         def checkHeroCollide(hero, enemy_group):
@@ -214,12 +220,10 @@ while True:
     if myGame.isGameOver():
         myGame.showGameOver()
     elif not myGame.isPause():
-        myGame.play(enemy_groups, gift_groups)
-
+         myGame.play(enemy_groups, gift_groups)
     pygame.display.update()                                         # 更新屏幕
-
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:                               # 退出游戏
+        if event.type == pygame.QUIT:                               # Q键退出游戏
             pygame.quit()
             exit()
         # get keyboard input
@@ -235,5 +239,5 @@ while True:
             if event.key in offset:
                 offset[event.key] = 0
 
-    if not myGame.hero.is_hit:
+    if not myGame.hero.is_hit:                                      # 移动
         myGame.hero.move(offset)
