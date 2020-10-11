@@ -31,6 +31,7 @@ class EnemyType(Enum):
 
 bullet_type = [BulletType.OneWay, BulletType.TwoWay, BulletType.ThreeWay]
 
+
 class Weapon(pygame.sprite.Sprite):
     """武器精灵类"""
 

@@ -24,6 +24,7 @@ class ScreenInfo:
         self.gift_score = 0
 
     def addScore(self, score):
+        """累加总分， 道具触发得分"""
         self.score += score
         self.gift_score += score
 
@@ -31,6 +32,7 @@ class ScreenInfo:
         return self.score
 
     def shouldCreateGift(self):
+        """道具产生判定"""
         if self.gift_score > 20000:
             self.gift_score -= 20000
             return True
@@ -130,10 +132,12 @@ class Game:
         def updateBackground(screen, image_height, current_y):
             """ 更新背景 """
             if current_y <= 0:                      # 背景第一幕
+                pass
                 screen.blit(background, (0, 0), (0, -current_y, SCREEN_WIDTH, SCREEN_HEIGHT))
             elif current_y < SCREEN_HEIGHT:         # 背景循环幕
                 screen.blit(background, (0, 0), (0, image_height - current_y, SCREEN_WIDTH, current_y))
                 screen.blit(background, (0, current_y), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - current_y))
+                pass
 
         def checkBulletCollide(enemy_group, bullets_group, screen, ticks):
             """子弹和敌机的碰撞检测"""
@@ -193,6 +197,7 @@ class Game:
         self.screen_info.displayInfo(self.screen, 0, self.hero.bomb_num, self.hero.life)
 
     def isGameOver(self):
+        """游戏结束"""
         if self.hero.down_index >= len(self.hero.down_surface):
             if self.hero.life <= 0:
                 return 1
@@ -213,7 +218,7 @@ class Game:
 
 offset = {pygame.K_LEFT: 0, pygame.K_RIGHT: 0, pygame.K_UP: 0, pygame.K_DOWN: 0}
 
-pygame.init()       # 初始化
+pygame.init()                   # 游戏库初始化
 
 (background, gameover, game_over_sound, bomb_surface, plane_surface) = initGame()
 screen_info = ScreenInfo(bomb_surface, plane_surface)
@@ -229,8 +234,8 @@ while True:
 
     pygame.display.update()                 # 更新屏幕
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:       # Q键退出游戏
+    for event in pygame.event.get():        # 关闭屏幕退出游戏
+        if event.type == pygame.QUIT:
             pygame.quit()
             exit()
         # get keyboard input
@@ -242,6 +247,9 @@ while True:
             # press z to pause or resume game
             elif event.key == pygame.K_z:   # Z键暂停
                 myGame.setPause()
+            elif event.key == pygame.K_q:   # Q键退出游戏
+                pygame.quit()
+                exit()
         elif event.type == pygame.KEYUP:    # 松开键盘时
             if event.key in offset:
                 offset[event.key] = 0
