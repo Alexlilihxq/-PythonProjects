@@ -1,0 +1,15 @@
+import House_tools
+#创建
+print("-"*50)
+bed = House_tools.HouseItem("席梦思",4)
+chest = House_tools.HouseItem("衣柜",2)
+table = House_tools.HouseItem("餐桌",3)
+print(bed)
+print(chest)
+print(table)
+print("-"*50)
+myhome = House_tools.House("两室一厅",60)
+myhome.add_item(bed)
+myhome.add_item(chest)
+myhome.add_item(table)
+print(myhome)
