@@ -51,7 +51,7 @@ def save_images(image_list, file_path):
 
 
 if __name__ == '__main__':
-    file_list = ['python.jpeg', 'Walker.jpeg', 'Programmer.png', '胖虎.png', 'default.jpg']
+    file_list = ['python.jpeg', 'Walker.jpeg', 'Programmer.png', 'PangHu.png', 'default.jpg']
     file_path = file_list[3]
     image = Image.open(file_path)
     image = fill_image(image)
