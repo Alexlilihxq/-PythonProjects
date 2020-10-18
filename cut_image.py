@@ -43,7 +43,7 @@ def cut_image(image):
 def save_images(image_list, file_path):
     """保存, 将切割后的图片保存到指定目录"""
     index = 1
-    file_name = os.path.basename(file_path)
+    file_name = os.path.basename(file_path)     # 优化图片保存方式
     file_name = file_name.split('.')[0]
     for image in image_list:
         image.save('./result/' + file_name + str(index) + '.png', 'PNG')
@@ -51,7 +51,7 @@ def save_images(image_list, file_path):
 
 
 if __name__ == '__main__':
-    file_list = ['python.jpeg', 'Walker.jpeg', 'Programmer.png', 'YouZhiGui.jpg']
+    file_list = ['python.jpeg', 'Walker.jpeg', 'Programmer.png', '胖虎.png', 'default.jpg']
     file_path = file_list[3]
     image = Image.open(file_path)
     image = fill_image(image)
