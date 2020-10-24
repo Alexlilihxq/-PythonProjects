@@ -53,10 +53,10 @@ def save_images(image_list, file_path):
 
 
 if __name__ == '__main__':
-    file_list = ['GitNum.png', 'python.jpeg', 'Walker.jpeg', 'Programmer.png', 'PangHu.png']
-    file_path = file_list[4]
+    file_list = ['PangHu.png', 'python.jpeg', 'Walker.jpeg', 'Programmer.png']
+    file_path = file_list[0]
     image = Image.open(file_path)
     image = fill_image(image)
     # image.show()
-    image_list = cut_image_divided(image, 2)
+    image_list = cut_image_divided(image, 3)
     save_images(image_list, file_path)
