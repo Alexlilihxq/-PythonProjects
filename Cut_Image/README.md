@@ -3,8 +3,9 @@
 ### 使用python PIL 库将一张照片切分为9张图
 ##### Author : Alexlilihxq
 ## 举例
-#### 例子1：不规则图形,先填充白边再切分
+#### 例子：不规则图形,先填充白边再切分
 ##### 原图：
+
 ![python](https://github.com/Alexlilihxq/-PythonProjects/blob/master/Cut_Image/PangHu.png)
 
 ##### 进行切图后：

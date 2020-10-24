@@ -24,16 +24,18 @@ def fill_image(image):
     return new_image
 
 
-def cut_image(image):
-    """切割, 将图片切分为9块"""
+def cut_image_divided(image, n):
+    """切割，将图片切割为n x n 的子图
+    :param : n
+    :type : int
+    """
     width, height = image.size
-    item_width = int(width / 3)
+    item_width = int(width / n)
     box_list = []
-    # (left, upper, right, lower)
-    for i in range(0, 3):
-        for j in range(0, 3):
-            # 计算图片切割位置
-            # print((i*item_width,j*item_width,(i+1)*item_width,(j+1)*item_width))
+    # (left, upper, right , lower)
+    for i in range(0, n):
+        for j in range(0, n):
+            # 计算图片切割的位置
             box = (j * item_width, i * item_width, (j + 1) * item_width, (i + 1) * item_width)
             box_list.append(box)
     image_list = [image.crop(box) for box in box_list]
@@ -51,10 +53,10 @@ def save_images(image_list, file_path):
 
 
 if __name__ == '__main__':
-    file_list = ['python.jpeg', 'Walker.jpeg', 'Programmer.png', 'PangHu.png', 'default.jpg']
-    file_path = file_list[3]
+    file_list = ['GitNum.png', 'python.jpeg', 'Walker.jpeg', 'Programmer.png', 'PangHu.png']
+    file_path = file_list[4]
     image = Image.open(file_path)
     image = fill_image(image)
     # image.show()
-    image_list = cut_image(image)
+    image_list = cut_image_divided(image, 2)
     save_images(image_list, file_path)
