@@ -42,6 +42,7 @@ def cut_image_divided(image, n):
     return image_list
 
 
+
 def save_images(image_list, file_path):
     """保存, 将切割后的图片保存到指定目录"""
     index = 1
@@ -54,9 +55,10 @@ def save_images(image_list, file_path):
 
 if __name__ == '__main__':
     file_list = ['PangHu.png', 'python.jpeg', 'Walker.jpeg', 'Programmer.png']
-    file_path = file_list[0]
+    file_path = file_list[1]
     image = Image.open(file_path)
     image = fill_image(image)
-    # image.show()
-    image_list = cut_image_divided(image, 3)
+    image.show()
+    image_list = cut_image_divided(image, 4)
+    image_list[0].show()
     save_images(image_list, file_path)

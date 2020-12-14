@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/AircraftShootGame.iml" filepath="$PROJECT_DIR$/.idea/AircraftShootGame.iml" />
       <module fileurl="file://$PROJECT_DIR$/../PythonShootGame/.idea/PythonShootGame.iml" filepath="$PROJECT_DIR$/../PythonShootGame/.idea/PythonShootGame.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../cut_image/.idea/cut_image.iml" filepath="$PROJECT_DIR$/../cut_image/.idea/cut_image.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Cut_Image/.idea/cut_image.iml" filepath="$PROJECT_DIR$/../Cut_Image/.idea/cut_image.iml" />
     </modules>
   </component>
 </project>

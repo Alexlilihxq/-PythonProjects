@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Cut_Image.iml" filepath="$PROJECT_DIR$/.idea/Cut_Image.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Tencent22Years/.idea/Tencent22Years.iml" filepath="$PROJECT_DIR$/../Tencent22Years/.idea/Tencent22Years.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/UnitTest_BaiDuSearch/.idea/UnitTest_BaiDuSearch.iml" filepath="$USER_HOME$/PycharmProjects/UnitTest_BaiDuSearch/.idea/UnitTest_BaiDuSearch.iml" />
     </modules>
   </component>
 </project>
